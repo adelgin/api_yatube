@@ -1,10 +1,15 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from rest_framework.authtoken.views import obtain_auth_token
 from django.urls import include, path
+from yatube_api.schema import schema
 
 urlpatterns = [
+    path('', schema),
     path('admin/', admin.site.urls),
+    path('api/v1/api-token-auth/', obtain_auth_token),
+    path('', include('api.urls')),
 ]
 
 
