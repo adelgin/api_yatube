@@ -6,17 +6,15 @@ from django.urls import include, path
 from yatube_api.schema import schema
 
 urlpatterns = [
-    path('', schema),
-    path('admin/', admin.site.urls),
-    path('api/v1/api-token-auth/', obtain_auth_token),
-    path('', include('api.urls')),
+    path("", schema),
+    path("admin/", admin.site.urls),
+    path("api/v1/api-token-auth/", obtain_auth_token),
+    path("", include("api.urls")),
 ]
 
 
 if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-    )
-    urlpatterns += static(
-        settings.STATIC_URL, document_root=settings.STATIC_ROOT
-    )
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)

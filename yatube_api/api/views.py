@@ -3,10 +3,10 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsAuthor
 from rest_framework.decorators import permission_classes
-from django.urls import include, path
 
 from posts.models import Post, Group, Comment
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
+
 
 @permission_classes([IsAuthenticated, IsAuthor])
 class PostViewSet(viewsets.ModelViewSet):
@@ -16,10 +16,12 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+
 @permission_classes([IsAuthenticated])
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
-    serializer_class = GroupSerializer 
+    serializer_class = GroupSerializer
+
 
 @permission_classes([IsAuthenticated, IsAuthor])
 class CommentViewSet(viewsets.ModelViewSet):
@@ -27,10 +29,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        post = get_object_or_404(Post, id=self.kwargs.get('post_id'))
+        post = get_object_or_404(Post, id=self.kwargs.get("post_id"))
         return post.comments.all()
 
     def perform_create(self, serializer):
-        post_id = self.kwargs.get('post_id')
+        post_id = self.kwargs.get("post_id")
         post = get_object_or_404(Post, id=post_id)
         serializer.save(author=self.request.user, post=post)
